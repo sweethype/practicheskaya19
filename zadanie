@@ -1,0 +1,122 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace djaugust
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // Задание 1
+
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue("Анна");
+            queue.Enqueue("Пётр");
+            queue.Enqueue("Ольга");
+            queue.Enqueue("Иван");
+            queue.Enqueue("Мария");
+            Console.Write("Очередь: ");
+            Console.Write(string.Join(", ", queue));
+            while (queue.Count > 0)
+            {
+                Console.WriteLine("Обслуживаем: " + queue.Dequeue());
+            }
+            Console.WriteLine("Очередь пуста\n");
+
+            // Задание 2
+
+            Stack<string> stack = new Stack<string>();
+            Console.WriteLine("Введите строки");
+            while (true)
+            {
+                string s = Console.ReadLine();
+                if (string.IsNullOrEmpty(s))
+                    break;
+                stack.Push(s);
+            }
+            Console.WriteLine("Вывод:");
+            while (stack.Count > 0)
+                Console.WriteLine(stack.Pop());
+            Console.WriteLine();
+
+            // Задание 3: HashSet — уникальные имена
+
+            HashSet<string> names = new HashSet<string>();
+            Console.WriteLine("Введите имена");
+
+            while (true)
+            {
+                string name = Console.ReadLine();
+                if (string.IsNullOrEmpty(name))
+                    break;
+                names.Add(name);
+            }
+            List<string> sorted = new List<string>(names);
+            sorted.Sort();
+
+            Console.WriteLine("Уникальные: " + string.Join(", ", sorted));
+            Console.WriteLine();
+
+            // Задание 4
+
+            LinkedList<string> history = new LinkedList<string>();
+            LinkedListNode<string> current = null;
+            Console.WriteLine("Введите адреса сайтов: ");
+
+            string cmd;
+            while (true)
+            {
+                cmd = Console.ReadLine();
+                if (string.IsNullOrEmpty(cmd))
+                    break;
+
+                if (cmd == "back")
+                {
+                    if (current != null && current.Previous != null)
+                    {
+                        current = current.Previous;
+                        Console.WriteLine("Текущая страница: " + current.Value);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Назад нельзя");
+                    }
+                }
+                else
+                {
+                    history.AddLast(cmd);
+                    current = history.Last;
+                }
+            }
+            Console.WriteLine();
+
+            // Задание 5
+
+            Dictionary<string, bool> cache = new Dictionary<string, bool>();
+            Queue<string> order = new Queue<string>();
+            Console.WriteLine("Введите адреса страниц: ");
+            while (true)
+            {
+                string page = Console.ReadLine();
+                if (string.IsNullOrEmpty(page))
+                    break;
+                if (!cache.ContainsKey(page))
+                {
+                    if (cache.Count == 3)
+                    {
+                        string oldest = order.Dequeue();
+                        cache.Remove(oldest);
+                        Console.WriteLine("Удаляется: " + oldest);
+                    }
+
+                    cache[page] = true;
+                    order.Enqueue(page);
+                }
+            }
+            Console.WriteLine("Текущий кеш: " + string.Join(", ", order));
+        }
+    }
+}
